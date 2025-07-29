@@ -1,9 +1,10 @@
-import type { Song, RecommendHistory } from '../types';
+import type { Song, RecommendHistory, AppSettings } from '../types';
 
 const DB_NAME = 'KaraokeRecommendDB';
-const DB_VERSION = 2; // バージョンアップして履歴ストア追加
+const DB_VERSION = 3; // バージョンアップして設定ストア追加
 const SONGS_STORE = 'songs';
 const HISTORY_STORE = 'history';
+const SETTINGS_STORE = 'settings';
 
 // IndexedDBを初期化
 export const initDB = (): Promise<IDBDatabase> => {
@@ -43,6 +44,13 @@ export const initDB = (): Promise<IDBDatabase> => {
         historyStore.createIndex('recommendedAt', 'recommendedAt', { unique: false });
         historyStore.createIndex('trackName', 'song.trackName', { unique: false });
         historyStore.createIndex('artistName', 'song.artistName', { unique: false });
+      }
+
+      // 設定データストア
+      if (!db.objectStoreNames.contains(SETTINGS_STORE)) {
+        db.createObjectStore(SETTINGS_STORE, { 
+          keyPath: 'key' 
+        });
       }
     };
   });
@@ -355,5 +363,66 @@ export const getHistoryCount = async (): Promise<number> => {
   } catch (error) {
     console.error('getHistoryCount error:', error);
     return 0;
+  }
+}; 
+
+// === 設定データ管理関数 ===
+
+// 設定データを保存
+export const saveSettings = async (settings: AppSettings): Promise<void> => {
+  try {
+    const db = await initDB();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([SETTINGS_STORE], 'readwrite');
+      const store = transaction.objectStore(SETTINGS_STORE);
+      
+      // 設定データを保存（key: 'userSettings'で固定）
+      const settingsData = {
+        key: 'userSettings',
+        data: settings
+      };
+      
+      const request = store.put(settingsData);
+
+      request.onsuccess = () => {
+        resolve();
+      };
+
+      request.onerror = () => {
+        reject(new Error('設定データの保存に失敗しました'));
+      };
+    });
+  } catch (error) {
+    console.error('saveSettings error:', error);
+    throw error;
+  }
+};
+
+// 設定データを取得
+export const loadSettings = async (): Promise<AppSettings | null> => {
+  try {
+    const db = await initDB();
+    
+    return new Promise((resolve, reject) => {
+      const transaction = db.transaction([SETTINGS_STORE], 'readonly');
+      const store = transaction.objectStore(SETTINGS_STORE);
+      const request = store.get('userSettings');
+
+      request.onsuccess = () => {
+        if (request.result) {
+          resolve(request.result.data);
+        } else {
+          resolve(null); // 設定データが存在しない場合
+        }
+      };
+
+      request.onerror = () => {
+        reject(new Error('設定データの取得に失敗しました'));
+      };
+    });
+  } catch (error) {
+    console.error('loadSettings error:', error);
+    return null;
   }
 }; 

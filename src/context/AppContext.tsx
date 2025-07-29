@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import type { ReactNode } from 'react';
-import type { AppState, AppAction, Song, DisplaySong } from '../types';
-import { getAllSongs, saveSongs, mergeSongs, getSongsCount, getAllHistory, saveHistoryItem, deleteHistoryItem, clearAllHistory } from '../utils/indexedDB';
+import type { AppState, AppAction, Song, DisplaySong, AppSettings } from '../types';
+import { getAllSongs, saveSongs, mergeSongs, getSongsCount, getAllHistory, saveHistoryItem, deleteHistoryItem, clearAllHistory, saveSettings, loadSettings } from '../utils/indexedDB';
 import type { MergeMode } from '../components/common/DataMergeModal';
 
 // 初期状態
@@ -96,6 +96,8 @@ interface AppContextType {
   addHistoryAndSave: (song: DisplaySong) => Promise<void>;
   removeHistoryAndSave: (historyId: string) => Promise<void>;
   clearHistoryAndSave: () => Promise<void>;
+  loadSettingsFromDB: () => Promise<void>;
+  updateSettingsAndSave: (settings: Partial<AppSettings>) => Promise<void>;
   getRandomRecommendation: () => Promise<DisplaySong[]>;
   convertToDisplaySong: (song: Song) => DisplaySong;
 }
@@ -113,6 +115,7 @@ export function AppProvider({ children }: AppProviderProps) {
   // アプリ起動時にIndexedDBからデータを復元
   useEffect(() => {
     const initializeData = async () => {
+      await loadSettingsFromDB();
       await loadSongsFromDB();
       await loadHistoryFromDB();
     };
@@ -229,6 +232,31 @@ export function AppProvider({ children }: AppProviderProps) {
     }
   };
 
+  // IndexedDBから設定データを読み込む
+  const loadSettingsFromDB = async (): Promise<void> => {
+    try {
+      const settings = await loadSettings();
+      if (settings) {
+        dispatch({ type: 'UPDATE_SETTINGS', payload: settings });
+      }
+    } catch (error) {
+      console.error('設定データベースからの読み込みエラー:', error);
+    }
+  };
+
+  // 設定を更新してIndexedDBに保存
+  const updateSettingsAndSave = async (settings: Partial<AppSettings>): Promise<void> => {
+    try {
+      const newSettings = { ...state.settings, ...settings };
+      await saveSettings(newSettings);
+      dispatch({ type: 'UPDATE_SETTINGS', payload: settings });
+    } catch (error) {
+      console.error('設定保存エラー:', error);
+      // DBへの保存に失敗してもメモリには更新
+      dispatch({ type: 'UPDATE_SETTINGS', payload: settings });
+    }
+  };
+
   // SongをDisplaySongに変換
   const convertToDisplaySong = (song: Song): DisplaySong => ({
     id: song.trackUri,
@@ -299,6 +327,8 @@ export function AppProvider({ children }: AppProviderProps) {
     addHistoryAndSave,
     removeHistoryAndSave,
     clearHistoryAndSave,
+    loadSettingsFromDB,
+    updateSettingsAndSave,
     getRandomRecommendation,
     convertToDisplaySong,
   };

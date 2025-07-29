@@ -5,24 +5,30 @@ import Icon from '../components/common/Icon';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
-  const { state, dispatch } = useApp();
+  const { state, updateSettingsAndSave } = useApp();
   const [showSaveMessage, setShowSaveMessage] = useState(false);
 
   // 設定の更新
-  const updateSetting = <K extends keyof typeof state.settings>(
+  const updateSetting = async <K extends keyof typeof state.settings>(
     key: K,
     value: typeof state.settings[K]
   ) => {
-    dispatch({
-      type: 'UPDATE_SETTINGS',
-      payload: { [key]: value }
-    });
-    
-    // 保存メッセージを表示
-    setShowSaveMessage(true);
-    setTimeout(() => {
-      setShowSaveMessage(false);
-    }, 2000);
+    try {
+      await updateSettingsAndSave({ [key]: value });
+      
+      // 保存メッセージを表示
+      setShowSaveMessage(true);
+      setTimeout(() => {
+        setShowSaveMessage(false);
+      }, 2000);
+    } catch (error) {
+      console.error('設定の保存に失敗しました:', error);
+      // エラーの場合でも一時的にメッセージを表示
+      setShowSaveMessage(true);
+      setTimeout(() => {
+        setShowSaveMessage(false);
+      }, 2000);
+    }
   };
 
   return (
