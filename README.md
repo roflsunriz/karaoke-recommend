@@ -1,69 +1,107 @@
-# React + TypeScript + Vite
+# 🎤 カラオケオートレコメンド
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Spotifyデータを活用した、あなたにぴったりのカラオケ楽曲推薦アプリです。
 
-Currently, two official plugins are available:
+## 🌟 概要
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+このアプリは、あなたのSpotifyリスニング履歴を分析し、カラオケで歌いやすい楽曲を自動的に推薦します。普段聞いている音楽の傾向から、カラオケで盛り上がる楽曲を見つけるお手伝いをします。
 
-## Expanding the ESLint configuration
+## 🚀 デモサイト
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+**[🎵 カラオケオートレコメンドを試す](https://roflsunriz.github.io/karaoke-recommend/)**
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## ✨ 主な機能
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- **📊 データインポート**: Spotifyエクスポートデータの読み込み
+- **🤖 自動推薦**: 聴取履歴に基づくカラオケ楽曲の推薦
+- **📋 楽曲リスト**: 推薦された楽曲の一覧表示
+- **📈 履歴管理**: 過去の推薦結果の確認
+- **⚙️ 設定**: 推薦アルゴリズムのカスタマイズ
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## 🛠️ 技術スタック
+
+- **フロントエンド**: React 19 + TypeScript
+- **ビルドツール**: Vite
+- **スタイリング**: Tailwind CSS v4
+- **ルーティング**: React Router v7
+- **ホスティング**: GitHub Pages
+
+## 📦 セットアップ
+
+### 必要な環境
+- Node.js 20以上
+- npm または yarn
+
+### インストール
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/roflsunriz/karaoke-recommend.git
+cd karaoke-recommend
+
+# 依存関係をインストール
+npm install
+
+# 開発サーバーを起動
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### ビルド
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+```bash
+# 本番用ビルド
+npm run build
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# プレビュー
+npm run preview
 ```
+
+## 🎯 使用方法
+
+1. **データ準備**: Spotifyからデータをエクスポート
+2. **インポート**: アプリにデータをアップロード
+3. **推薦取得**: 自動推薦される楽曲を確認
+4. **カラオケ**: 推薦された楽曲でカラオケを楽しむ！
+
+## 📁 プロジェクト構造
+
+```
+src/
+├── components/          # 再利用可能なコンポーネント
+│   └── Layout/         # レイアウトコンポーネント
+├── pages/              # ページコンポーネント
+├── context/            # Reactコンテキスト
+├── types/              # TypeScript型定義
+└── assets/             # 静的アセット
+```
+
+## 🔧 開発
+
+### スクリプト
+
+```bash
+npm run dev       # 開発サーバー起動
+npm run build     # 本番ビルド
+npm run preview   # ビルド結果のプレビュー
+npm run lint      # ESLintでコードチェック
+```
+
+### コントリビューション
+
+1. このリポジトリをフォーク
+2. feature ブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m 'Add amazing feature'`)
+4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
+5. Pull Request を作成
+
+## 📄 ライセンス
+
+このプロジェクトはMITライセンスの下で公開されています。
+
+## 👨‍💻 開発者
+
+[@roflsunriz](https://github.com/roflsunriz)
+
+---
+
+**🎵 Happy Karaoke! 🎵**
