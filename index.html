@@ -1,0 +1,31 @@
+<!doctype html>
+<!-- © roflsunriz - 2025 カラオケオートレコメンド -->
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/karaoke-recommend/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>カラオケオートレコメンド</title>
+    <meta name="description" content="Skileyのエクスポートデータを活用した、あなたにぴったりのカラオケ楽曲推薦アプリ" />
+    
+    <!-- GitHub PagesでSPAルーティング処理用スクリプト -->
+    <script type="text/javascript">
+      // 404.htmlからのリダイレクト処理
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
+    <script type="module" crossorigin src="/karaoke-recommend/assets/index-CZvnbMa0.js"></script>
+    <link rel="stylesheet" crossorigin href="/karaoke-recommend/assets/index-C1bPuoXM.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
