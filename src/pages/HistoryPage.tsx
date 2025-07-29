@@ -5,7 +5,7 @@ import Icon from '../components/common/Icon';
 
 const HistoryPage = () => {
   const navigate = useNavigate();
-  const { state, dispatch } = useApp();
+  const { state, removeHistoryAndSave, clearHistoryAndSave } = useApp();
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'trackName' | 'artistName'>('newest');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<string | null>(null);
@@ -57,9 +57,9 @@ const HistoryPage = () => {
     setShowConfirmModal(true);
   };
 
-  const confirmDelete = () => {
+  const confirmDelete = async () => {
     if (itemToDelete) {
-      dispatch({ type: 'REMOVE_FROM_HISTORY', payload: itemToDelete });
+      await removeHistoryAndSave(itemToDelete);
     }
     setShowConfirmModal(false);
     setItemToDelete(null);
@@ -71,8 +71,8 @@ const HistoryPage = () => {
     setShowConfirmModal(true);
   };
 
-  const confirmClearAll = () => {
-    dispatch({ type: 'CLEAR_HISTORY' });
+  const confirmClearAll = async () => {
+    await clearHistoryAndSave();
     setShowConfirmModal(false);
     setItemToDelete(null);
   };

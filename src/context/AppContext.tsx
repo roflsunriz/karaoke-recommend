@@ -1,6 +1,8 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import type { ReactNode } from 'react';
 import type { AppState, AppAction, Song, DisplaySong } from '../types';
+import { getAllSongs, saveSongs, mergeSongs, getSongsCount, getAllHistory, saveHistoryItem, deleteHistoryItem, clearAllHistory } from '../utils/indexedDB';
+import type { MergeMode } from '../components/common/DataMergeModal';
 
 // 初期状態
 const initialState: AppState = {
@@ -37,6 +39,12 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return {
         ...state,
         currentRecommendation: action.payload,
+      };
+    
+    case 'LOAD_HISTORY':
+      return {
+        ...state,
+        history: action.payload,
       };
     
     case 'ADD_TO_HISTORY': {
@@ -80,7 +88,15 @@ interface AppContextType {
   dispatch: React.Dispatch<AppAction>;
   // ヘルパー関数
   loadSongs: (songs: Song[]) => void;
-  getRandomRecommendation: () => DisplaySong[];
+  loadSongsFromDB: () => Promise<void>;
+  saveSongsToDB: (songs: Song[]) => Promise<void>;
+  mergeSongsToDB: (songs: Song[], mode: MergeMode) => Promise<void>;
+  checkExistingData: () => Promise<number>;
+  loadHistoryFromDB: () => Promise<void>;
+  addHistoryAndSave: (song: DisplaySong) => Promise<void>;
+  removeHistoryAndSave: (historyId: string) => Promise<void>;
+  clearHistoryAndSave: () => Promise<void>;
+  getRandomRecommendation: () => Promise<DisplaySong[]>;
   convertToDisplaySong: (song: Song) => DisplaySong;
 }
 
@@ -94,9 +110,123 @@ interface AppProviderProps {
 export function AppProvider({ children }: AppProviderProps) {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
-  // 曲データを読み込む
+  // アプリ起動時にIndexedDBからデータを復元
+  useEffect(() => {
+    const initializeData = async () => {
+      await loadSongsFromDB();
+      await loadHistoryFromDB();
+    };
+    initializeData();
+  }, []);
+
+  // 曲データを読み込む（メモリのみ）
   const loadSongs = (songs: Song[]) => {
     dispatch({ type: 'LOAD_SONGS', payload: songs });
+  };
+
+  // IndexedDBから曲データを読み込む
+  const loadSongsFromDB = async (): Promise<void> => {
+    try {
+      const songs = await getAllSongs();
+      if (songs.length > 0) {
+        dispatch({ type: 'LOAD_SONGS', payload: songs });
+      }
+    } catch (error) {
+      console.error('データベースからの読み込みエラー:', error);
+    }
+  };
+
+  // 曲データをIndexedDBに保存
+  const saveSongsToDB = async (songs: Song[]): Promise<void> => {
+    try {
+      await saveSongs(songs);
+      dispatch({ type: 'LOAD_SONGS', payload: songs });
+    } catch (error) {
+      console.error('データベースへの保存エラー:', error);
+      throw error;
+    }
+  };
+
+  // 曲データをマージしてIndexedDBに保存
+  const mergeSongsToDB = async (songs: Song[], mode: MergeMode): Promise<void> => {
+    try {
+      if (mode === 'replace') {
+        await saveSongs(songs);
+        dispatch({ type: 'LOAD_SONGS', payload: songs });
+      } else {
+        await mergeSongs(songs, mode);
+        const updatedSongs = await getAllSongs();
+        dispatch({ type: 'LOAD_SONGS', payload: updatedSongs });
+      }
+    } catch (error) {
+      console.error('データベースのマージエラー:', error);
+      throw error;
+    }
+  };
+
+  // 既存データの件数を確認
+  const checkExistingData = async (): Promise<number> => {
+    try {
+      return await getSongsCount();
+    } catch (error) {
+      console.error('データ件数取得エラー:', error);
+      return 0;
+    }
+  };
+
+  // IndexedDBから履歴データを読み込む
+  const loadHistoryFromDB = async (): Promise<void> => {
+    try {
+      const history = await getAllHistory();
+      if (history.length > 0) {
+        // 履歴をロード（個別にdispatchする代わりに一括で設定）
+        dispatch({ type: 'LOAD_HISTORY', payload: history });
+      }
+    } catch (error) {
+      console.error('履歴データベースからの読み込みエラー:', error);
+    }
+  };
+
+  // 履歴を追加してIndexedDBに保存
+  const addHistoryAndSave = async (song: DisplaySong): Promise<void> => {
+    const newHistoryItem = {
+      id: Date.now().toString(),
+      song,
+      recommendedAt: new Date(),
+    };
+    
+    try {
+      await saveHistoryItem(newHistoryItem);
+      dispatch({ type: 'ADD_TO_HISTORY', payload: song });
+    } catch (error) {
+      console.error('履歴保存エラー:', error);
+      // DBへの保存に失敗してもメモリには追加
+      dispatch({ type: 'ADD_TO_HISTORY', payload: song });
+    }
+  };
+
+  // 履歴を削除してIndexedDBからも削除
+  const removeHistoryAndSave = async (historyId: string): Promise<void> => {
+    try {
+      await deleteHistoryItem(historyId);
+      dispatch({ type: 'REMOVE_FROM_HISTORY', payload: historyId });
+    } catch (error) {
+      console.error('履歴削除エラー:', error);
+      // DBからの削除に失敗してもメモリからは削除
+      dispatch({ type: 'REMOVE_FROM_HISTORY', payload: historyId });
+    }
+  };
+
+  // 全履歴を削除してIndexedDBからも削除
+  const clearHistoryAndSave = async (): Promise<void> => {
+    try {
+      await clearAllHistory();
+      dispatch({ type: 'CLEAR_HISTORY' });
+    } catch (error) {
+      console.error('履歴全削除エラー:', error);
+      // DBからの削除に失敗してもメモリからは削除
+      dispatch({ type: 'CLEAR_HISTORY' });
+    }
   };
 
   // SongをDisplaySongに変換
@@ -109,7 +239,7 @@ export function AppProvider({ children }: AppProviderProps) {
   });
 
   // ランダムな曲を提案
-  const getRandomRecommendation = (): DisplaySong[] => {
+  const getRandomRecommendation = async (): Promise<DisplaySong[]> => {
     if (state.filteredSongs.length === 0) return [];
 
     let availableSongs = state.filteredSongs;
@@ -147,8 +277,8 @@ export function AppProvider({ children }: AppProviderProps) {
       recommendations.push(displaySong);
       usedSongs.add(selectedSong.trackUri);
       
-      // 履歴に追加
-      dispatch({ type: 'ADD_TO_HISTORY', payload: displaySong });
+      // 履歴に追加（IndexedDBにも保存）
+      await addHistoryAndSave(displaySong);
     }
 
     // 提案をセット
@@ -161,6 +291,14 @@ export function AppProvider({ children }: AppProviderProps) {
     state,
     dispatch,
     loadSongs,
+    loadSongsFromDB,
+    saveSongsToDB,
+    mergeSongsToDB,
+    checkExistingData,
+    loadHistoryFromDB,
+    addHistoryAndSave,
+    removeHistoryAndSave,
+    clearHistoryAndSave,
     getRandomRecommendation,
     convertToDisplaySong,
   };

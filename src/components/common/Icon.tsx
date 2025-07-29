@@ -26,6 +26,9 @@ import {
   PhoneAndroid,
   Album,
   CalendarToday,
+  Close,
+  Add,
+  Sync,
 } from '@mui/icons-material';
 
 type IconName =
@@ -49,7 +52,10 @@ type IconName =
   | 'bolt'
   | 'phone'
   | 'album'
-  | 'calendar';
+  | 'calendar'
+  | 'close'
+  | 'plus'
+  | 'sync';
 
 interface IconProps {
   name: IconName;
@@ -102,6 +108,9 @@ const Icon: React.FC<IconProps> = ({
     phone: PhoneAndroid,
     album: Album,
     calendar: CalendarToday,
+    close: Close,
+    plus: Add,
+    sync: Sync,
   };
 
   const IconComponent = iconMap[name];

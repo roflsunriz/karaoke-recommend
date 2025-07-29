@@ -10,12 +10,12 @@ const RecommendPage = () => {
   const [showNoSongsMessage, setShowNoSongsMessage] = useState(false);
 
   // 新しい提案を取得
-  const handleNewRecommendation = useCallback(() => {
+  const handleNewRecommendation = useCallback(async () => {
     setIsAnimating(true);
     setShowNoSongsMessage(false);
     
-    setTimeout(() => {
-      const newRecommendation = getRandomRecommendation();
+    setTimeout(async () => {
+      const newRecommendation = await getRandomRecommendation();
       if (newRecommendation.length === 0) {
         setShowNoSongsMessage(true);
       }

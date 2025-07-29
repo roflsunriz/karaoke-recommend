@@ -2,17 +2,51 @@ import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
 import Icon from '../components/common/Icon';
+import DataMergeModal, { type MergeMode } from '../components/common/DataMergeModal';
 import type { Song } from '../types';
 
 const ImportPage = () => {
   const navigate = useNavigate();
-  const { loadSongs } = useApp();
+  const { saveSongsToDB, mergeSongsToDB, checkExistingData } = useApp();
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   const [dragActive, setDragActive] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  
+  // モーダル関連の状態
+  const [showModal, setShowModal] = useState(false);
+  const [pendingSongs, setPendingSongs] = useState<Song[]>([]);
+  const [existingCount, setExistingCount] = useState(0);
+
+  // モーダルでの選択処理
+  const handleModeSelect = async (mode: MergeMode) => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      if (mode === 'replace') {
+        await saveSongsToDB(pendingSongs);
+        setSuccess(`${pendingSongs.length}曲のデータで完全に置き換えました！`);
+      } else {
+        await mergeSongsToDB(pendingSongs, mode);
+        const modeText = mode === 'merge1' ? 'マージ1（既存データ保持）' : 'マージ2（削除曲も反映）';
+        setSuccess(`${modeText}でデータをマージしました！`);
+      }
+      
+      // 2秒後にListPageに遷移
+      setTimeout(() => {
+        navigate('/list');
+      }, 2000);
+      
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'データの保存に失敗しました');
+    } finally {
+      setLoading(false);
+      setPendingSongs([]);
+    }
+  };
 
   // ファイル読み込み処理
   const handleFileLoad = async (file: File) => {
@@ -40,14 +74,26 @@ const ImportPage = () => {
         throw new Error('必要なフィールド（trackName, artistName, trackDuration, trackUri）が不足しています');
       }
 
-      // データを読み込み
-      loadSongs(data as Song[]);
-      setSuccess(`${data.length}曲のデータを正常に読み込みました！`);
+      const newSongs = data as Song[];
       
-      // 2秒後にListPageに遷移
-      setTimeout(() => {
-        navigate('/list');
-      }, 2000);
+      // 既存データをチェック
+      const existingDataCount = await checkExistingData();
+      
+      if (existingDataCount > 0) {
+        // 既存データがある場合はモーダルを表示
+        setExistingCount(existingDataCount);
+        setPendingSongs(newSongs);
+        setShowModal(true);
+      } else {
+        // 既存データがない場合は直接保存
+        await saveSongsToDB(newSongs);
+        setSuccess(`${newSongs.length}曲のデータを正常に読み込みました！`);
+        
+        // 2秒後にListPageに遷移
+        setTimeout(() => {
+          navigate('/list');
+        }, 2000);
+      }
 
     } catch (err) {
       setError(err instanceof Error ? err.message : 'ファイルの読み込みに失敗しました');
@@ -187,6 +233,15 @@ const ImportPage = () => {
           <li>ランダムレコメンド機能をお楽しみください！</li>
         </ol>
       </div>
+
+      {/* データマージモーダル */}
+      <DataMergeModal
+        isOpen={showModal}
+        onClose={() => setShowModal(false)}
+        onConfirm={handleModeSelect}
+        existingCount={existingCount}
+        newCount={pendingSongs.length}
+      />
     </div>
   );
 };

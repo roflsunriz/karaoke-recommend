@@ -262,7 +262,7 @@ const SettingsPage = () => {
 
           <div className="mt-6 pt-4 border-t border-gray-200">
             <p className="text-center text-sm text-gray-500">
-              © 2025 roflsunriz - カラオケオートレコメンド - v1.0.0
+              © 2025 roflsunriz - カラオケオートレコメンド - v1.5.0
             </p>
           </div>
         </div>

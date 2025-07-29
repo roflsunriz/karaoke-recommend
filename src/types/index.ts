@@ -79,6 +79,7 @@ export type AppAction =
   | { type: 'LOAD_SONGS'; payload: Song[] }
   | { type: 'SET_FILTERED_SONGS'; payload: Song[] }
   | { type: 'SET_RECOMMENDATION'; payload: DisplaySong[] }
+  | { type: 'LOAD_HISTORY'; payload: RecommendHistory[] }
   | { type: 'ADD_TO_HISTORY'; payload: DisplaySong }
   | { type: 'CLEAR_HISTORY' }
   | { type: 'REMOVE_FROM_HISTORY'; payload: string }
