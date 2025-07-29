@@ -211,3 +211,10 @@ storybook-static
 
 # Turbo
 .turbo
+
+# Project specific files to exclude from repository
+# Keep locally but don't commit to repository
+お気に入りの曲 - Skiley Export.json
+Spotifyデータ(Skileyエクスポートデータ)カラオケオートレコメンド要件定義書.md
+カラオケオートレコメンド画面設計定義書.md
+public/sample-data.json
