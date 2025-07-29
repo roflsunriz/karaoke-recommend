@@ -1,3 +1,8 @@
+/*!
+ * © roflsunriz - 2025 カラオケオートレコメンド
+ * カラオケ楽曲推薦アプリ
+ */
+
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'

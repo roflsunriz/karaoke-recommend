@@ -1,3 +1,8 @@
+/*!
+ * © roflsunriz - 2025 カラオケオートレコメンド
+ * メインアプリケーションコンポーネント
+ */
+
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import Header from './components/Layout/Header';
