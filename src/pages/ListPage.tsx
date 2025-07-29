@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import Icon from '../components/common/Icon';
 
 const ListPage = () => {
   const navigate = useNavigate();
@@ -72,7 +73,9 @@ const ListPage = () => {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <span className="text-4xl mb-4 block">⚠️</span>
+          <div className="mb-4 flex justify-center">
+            <Icon name="warning" color="warning" size="large" />
+          </div>
           <h2 className="text-xl font-semibold text-yellow-800 mb-2">
             データが読み込まれていません
           </h2>
@@ -170,7 +173,7 @@ const ListPage = () => {
           onClick={handleGoToRecommend}
           className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200 flex items-center space-x-2"
         >
-          <span>🎵</span>
+          <Icon name="music" color="inherit" size="small" />
           <span>レコメンドを開始</span>
         </button>
       </div>

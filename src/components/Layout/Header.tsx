@@ -1,14 +1,15 @@
 import { Link, useLocation } from 'react-router-dom';
+import Icon from '../common/Icon';
 
 const Header = () => {
   const location = useLocation();
 
   const navigationItems = [
-    { path: '/import', label: 'Import', icon: '📁' },
-    { path: '/list', label: 'List', icon: '📋' },
-    { path: '/recommend', label: 'Recommend', icon: '🎵' },
-    { path: '/history', label: 'History', icon: '📜' },
-    { path: '/settings', label: 'Settings', icon: '⚙️' },
+    { path: '/import', label: 'Import', icon: 'folder' as const },
+    { path: '/list', label: 'List', icon: 'list' as const },
+    { path: '/recommend', label: 'Recommend', icon: 'music' as const },
+    { path: '/history', label: 'History', icon: 'history' as const },
+    { path: '/settings', label: 'Settings', icon: 'settings' as const },
   ];
 
   return (
@@ -16,7 +17,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span className="text-2xl">🎤</span>
+            <Icon name="mic" color="inherit" size="medium" />
             <h1 className="text-xl font-bold">カラオケオートレコメンド</h1>
           </div>
           
@@ -31,7 +32,7 @@ const Header = () => {
                     : 'text-white/80 hover:bg-white/10 hover:text-white'
                 }`}
               >
-                <span className="text-sm">{item.icon}</span>
+                <Icon name={item.icon} color="inherit" size="small" />
                 <span>{item.label}</span>
               </Link>
             ))}

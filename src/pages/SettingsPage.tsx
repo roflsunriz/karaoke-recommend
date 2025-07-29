@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import Icon from '../components/common/Icon';
 
 const SettingsPage = () => {
   const navigate = useNavigate();
@@ -40,7 +41,7 @@ const SettingsPage = () => {
       {showSaveMessage && (
         <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
           <div className="flex items-center space-x-2">
-            <span className="text-green-600">✅</span>
+            <Icon name="check" color="success" size="small" />
             <span className="text-green-700">設定を保存しました！</span>
           </div>
         </div>
@@ -50,7 +51,7 @@ const SettingsPage = () => {
         {/* レコメンド設定 */}
         <div className="bg-white rounded-lg shadow-sm border p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center space-x-2">
-            <span>🎵</span>
+            <Icon name="music" color="primary" size="small" />
             <span>レコメンド設定</span>
           </h3>
 
@@ -164,7 +165,7 @@ const SettingsPage = () => {
         {/* データ管理 */}
         <div className="bg-white rounded-lg shadow-sm border p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center space-x-2">
-            <span>📊</span>
+            <Icon name="chart" color="info" size="small" />
             <span>データ管理</span>
           </h3>
 
@@ -206,21 +207,21 @@ const SettingsPage = () => {
                   onClick={() => navigate('/import')}
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
-                  <span>📁</span>
+                  <Icon name="folder" color="inherit" size="small" />
                   <span>新しいデータを読み込み</span>
                 </button>
                 <button
                   onClick={() => navigate('/history')}
                   className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
-                  <span>📜</span>
+                  <Icon name="history" color="inherit" size="small" />
                   <span>履歴を管理</span>
                 </button>
                 <button
                   onClick={() => navigate('/recommend')}
                   className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
                 >
-                  <span>🎵</span>
+                  <Icon name="music" color="inherit" size="small" />
                   <span>レコメンドを開始</span>
                 </button>
               </div>
@@ -231,7 +232,7 @@ const SettingsPage = () => {
         {/* アプリケーション情報 */}
         <div className="bg-white rounded-lg shadow-sm border p-6">
           <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center space-x-2">
-            <span>ℹ️</span>
+            <Icon name="info" color="info" size="small" />
             <span>アプリケーション情報</span>
           </h3>
 
@@ -273,7 +274,7 @@ const SettingsPage = () => {
           onClick={() => navigate('/recommend')}
           className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 inline-flex items-center space-x-2"
         >
-          <span>⬅️</span>
+          <Icon name="back" color="inherit" size="small" />
           <span>レコメンドページに戻る</span>
         </button>
       </div>

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import Icon from '../components/common/Icon';
 import type { Song } from '../types';
 
 const ImportPage = () => {
@@ -112,7 +113,9 @@ const ImportPage = () => {
         onDrop={handleDrop}
       >
         <div className="space-y-4">
-          <div className="text-6xl text-gray-400">📁</div>
+                      <div className="flex justify-center mb-4">
+              <Icon name="folder" color="info" className="text-6xl" />
+            </div>
           <div>
             <p className="text-lg font-medium text-gray-700 mb-2">
               JSONファイルをドラッグ&ドロップ
@@ -162,7 +165,7 @@ const ImportPage = () => {
       {success && (
         <div className="mt-6 p-4 bg-green-50 border border-green-200 rounded-lg">
           <div className="flex items-center space-x-2">
-            <span className="text-green-600">✅</span>
+            <Icon name="check" color="success" size="small" />
             <span className="text-green-700">{success}</span>
           </div>
           <p className="text-green-600 mt-2 text-sm">
@@ -173,7 +176,10 @@ const ImportPage = () => {
 
       {/* 使用方法 */}
       <div className="mt-8 p-6 bg-gray-50 rounded-lg">
-        <h3 className="text-lg font-semibold text-gray-800 mb-3">📋 使用方法</h3>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+              <Icon name="list" color="primary" size="small" />
+              使用方法
+            </h3>
         <ol className="list-decimal list-inside space-y-2 text-gray-600">
           <li>SKileyアプリからプレイリストをJSONファイルとしてエクスポート</li>
           <li>エクスポートしたJSONファイルをここにアップロード</li>

@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useApp } from '../context/AppContext';
+import Icon from '../components/common/Icon';
 
 const RecommendPage = () => {
   const navigate = useNavigate();
@@ -39,7 +40,9 @@ const RecommendPage = () => {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <span className="text-4xl mb-4 block">⚠️</span>
+          <div className="mb-4 flex justify-center">
+            <Icon name="warning" color="warning" size="large" />
+          </div>
           <h2 className="text-xl font-semibold text-yellow-800 mb-2">
             データが読み込まれていません
           </h2>
@@ -62,7 +65,9 @@ const RecommendPage = () => {
     return (
       <div className="container mx-auto px-4 py-8 text-center">
         <div className="bg-orange-50 border border-orange-200 rounded-lg p-6">
-          <span className="text-4xl mb-4 block">🎵</span>
+          <div className="mb-4 flex justify-center">
+            <Icon name="music" color="warning" size="large" />
+          </div>
           <h2 className="text-xl font-semibold text-orange-800 mb-2">
             対象となる曲がありません
           </h2>
@@ -84,8 +89,9 @@ const RecommendPage = () => {
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       {/* ヘッダー */}
       <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-2">
-          🎤 次に歌う曲はこちら！
+        <h2 className="text-3xl font-bold text-gray-800 mb-2 flex items-center justify-center gap-2">
+          <Icon name="mic" color="primary" size="medium" />
+          次に歌う曲はこちら！
         </h2>
         <p className="text-gray-600">
           {state.filteredSongs.length}曲から選択 
@@ -106,14 +112,17 @@ const RecommendPage = () => {
               <div className="animate-spin rounded-full w-8 h-8 border-b-2 border-purple-600"></div>
               <span className="text-lg font-medium text-gray-700">選曲中...</span>
             </div>
-            <div className="text-gray-500">
-              素敵な曲を探しています 🎵
+            <div className="text-gray-500 flex items-center justify-center gap-2">
+              素敵な曲を探しています
+              <Icon name="music" color="info" size="small" />
             </div>
           </div>
         ) : showNoSongsMessage ? (
           // 提案可能な曲がない場合
           <div className="p-12 text-center">
-            <span className="text-6xl mb-4 block">😔</span>
+            <div className="mb-4 flex justify-center">
+              <Icon name="sad" color="info" className="text-6xl" />
+            </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
               提案できる曲がありません
             </h3>
@@ -142,7 +151,9 @@ const RecommendPage = () => {
           // 提案された曲の表示
           <div className="p-8">
             <div className="text-center mb-6">
-              <div className="text-6xl mb-4">🎵</div>
+              <div className="mb-4 flex justify-center">
+                <Icon name="music" color="primary" className="text-6xl" />
+              </div>
               <h3 className="text-2xl font-bold text-gray-800 mb-6">
                 {state.settings.displayCount === 1 ? '今回の提案曲' : '今回の提案曲（3曲）'}
               </h3>
@@ -156,8 +167,12 @@ const RecommendPage = () => {
             }`}>
               {state.currentRecommendation.map((song, index) => (
                 <div key={song.id} className="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
-                  <div className="text-4xl mb-3">
-                    {state.currentRecommendation.length === 1 ? '🎤' : `🎵`}
+                  <div className="mb-3 flex justify-center">
+                    <Icon 
+                      name={state.currentRecommendation.length === 1 ? 'mic' : 'music'} 
+                      color="secondary" 
+                      size="large" 
+                    />
                   </div>
                   <h4 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
                     {song.trackName}
@@ -168,10 +183,10 @@ const RecommendPage = () => {
                   <p className="text-sm text-gray-500 mb-3 line-clamp-1">
                     {song.albumName}
                   </p>
-                  <div className="inline-flex items-center space-x-2 text-gray-500 text-sm">
-                    <span>⏱️</span>
-                    <span>{song.trackDuration}</span>
-                  </div>
+                                      <div className="inline-flex items-center space-x-2 text-gray-500 text-sm">
+                      <Icon name="time" color="info" size="small" />
+                      <span>{song.trackDuration}</span>
+                    </div>
                   {state.currentRecommendation.length > 1 && (
                     <div className="mt-3">
                       <span className="inline-block bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full">
@@ -190,14 +205,14 @@ const RecommendPage = () => {
                 disabled={availableCount <= state.settings.displayCount && state.settings.preventDuplicates}
                 className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
               >
-                <span>🎲</span>
+                <Icon name="dice" color="inherit" size="small" />
                 <span>再抽選</span>
               </button>
               <button
                 onClick={() => navigate('/list')}
                 className="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
               >
-                <span>📋</span>
+                <Icon name="list" color="inherit" size="small" />
                 <span>曲一覧へ戻る</span>
               </button>
             </div>
@@ -205,7 +220,9 @@ const RecommendPage = () => {
         ) : (
           // 初期状態
           <div className="p-12 text-center">
-            <span className="text-6xl mb-4 block">🎤</span>
+            <div className="mb-4 flex justify-center">
+              <Icon name="mic" color="primary" className="text-6xl" />
+            </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-4">
               準備完了！
             </h3>
@@ -213,7 +230,7 @@ const RecommendPage = () => {
               onClick={handleNewRecommendation}
               className="bg-purple-600 hover:bg-purple-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2 mx-auto"
             >
-              <span>🎵</span>
+              <Icon name="music" color="inherit" size="small" />
               <span>曲を提案してもらう</span>
             </button>
           </div>
@@ -250,28 +267,28 @@ const RecommendPage = () => {
             onClick={() => navigate('/history')}
             className="flex items-center space-x-2 p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
           >
-            <span>📜</span>
+            <Icon name="history" color="inherit" size="small" />
             <span className="text-sm">履歴を見る</span>
           </button>
           <button
             onClick={() => navigate('/list')}
             className="flex items-center space-x-2 p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
           >
-            <span>📋</span>
+            <Icon name="list" color="inherit" size="small" />
             <span className="text-sm">曲一覧</span>
           </button>
           <button
             onClick={() => navigate('/settings')}
             className="flex items-center space-x-2 p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
           >
-            <span>⚙️</span>
+            <Icon name="settings" color="inherit" size="small" />
             <span className="text-sm">設定</span>
           </button>
           <button
             onClick={() => navigate('/import')}
             className="flex items-center space-x-2 p-3 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
           >
-            <span>📁</span>
+            <Icon name="folder" color="inherit" size="small" />
             <span className="text-sm">新しいデータ</span>
           </button>
         </div>
