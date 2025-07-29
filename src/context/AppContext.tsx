@@ -6,7 +6,7 @@ import type { AppState, AppAction, Song, DisplaySong } from '../types';
 const initialState: AppState = {
   songs: [],
   filteredSongs: [],
-  currentRecommendation: null,
+  currentRecommendation: [],
   history: [],
   settings: {
     preventDuplicates: true,
@@ -80,7 +80,7 @@ interface AppContextType {
   dispatch: React.Dispatch<AppAction>;
   // ヘルパー関数
   loadSongs: (songs: Song[]) => void;
-  getRandomRecommendation: () => DisplaySong | null;
+  getRandomRecommendation: () => DisplaySong[];
   convertToDisplaySong: (song: Song) => DisplaySong;
 }
 
@@ -109,8 +109,8 @@ export function AppProvider({ children }: AppProviderProps) {
   });
 
   // ランダムな曲を提案
-  const getRandomRecommendation = (): DisplaySong | null => {
-    if (state.filteredSongs.length === 0) return null;
+  const getRandomRecommendation = (): DisplaySong[] => {
+    if (state.filteredSongs.length === 0) return [];
 
     let availableSongs = state.filteredSongs;
 
@@ -124,19 +124,37 @@ export function AppProvider({ children }: AppProviderProps) {
 
     // 提案可能な曲がない場合
     if (availableSongs.length === 0) {
-      return null;
+      return [];
     }
 
-    // ランダム選択
-    const randomIndex = Math.floor(Math.random() * availableSongs.length);
-    const selectedSong = availableSongs[randomIndex];
-    const displaySong = convertToDisplaySong(selectedSong);
+    // 設定に応じた提案数を決定
+    const targetCount = Math.min(state.settings.displayCount, availableSongs.length);
+    const recommendations: DisplaySong[] = [];
+    const usedSongs = new Set<string>();
 
-    // 提案を履歴に追加
-    dispatch({ type: 'SET_RECOMMENDATION', payload: displaySong });
-    dispatch({ type: 'ADD_TO_HISTORY', payload: displaySong });
+    // 指定された数の曲をランダム選択
+    for (let i = 0; i < targetCount; i++) {
+      const availableForSelection = availableSongs.filter(song => 
+        !usedSongs.has(song.trackUri)
+      );
+      
+      if (availableForSelection.length === 0) break;
+      
+      const randomIndex = Math.floor(Math.random() * availableForSelection.length);
+      const selectedSong = availableForSelection[randomIndex];
+      const displaySong = convertToDisplaySong(selectedSong);
+      
+      recommendations.push(displaySong);
+      usedSongs.add(selectedSong.trackUri);
+      
+      // 履歴に追加
+      dispatch({ type: 'ADD_TO_HISTORY', payload: displaySong });
+    }
 
-    return displaySong;
+    // 提案をセット
+    dispatch({ type: 'SET_RECOMMENDATION', payload: recommendations });
+
+    return recommendations;
   };
 
   const contextValue: AppContextType = {

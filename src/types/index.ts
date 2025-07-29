@@ -68,7 +68,7 @@ export interface AppSettings {
 export interface AppState {
   songs: Song[];
   filteredSongs: Song[];
-  currentRecommendation: DisplaySong | null;
+  currentRecommendation: DisplaySong[];
   history: RecommendHistory[];
   settings: AppSettings;
   isDataLoaded: boolean;
@@ -78,7 +78,7 @@ export interface AppState {
 export type AppAction =
   | { type: 'LOAD_SONGS'; payload: Song[] }
   | { type: 'SET_FILTERED_SONGS'; payload: Song[] }
-  | { type: 'SET_RECOMMENDATION'; payload: DisplaySong }
+  | { type: 'SET_RECOMMENDATION'; payload: DisplaySong[] }
   | { type: 'ADD_TO_HISTORY'; payload: DisplaySong }
   | { type: 'CLEAR_HISTORY' }
   | { type: 'REMOVE_FROM_HISTORY'; payload: string }

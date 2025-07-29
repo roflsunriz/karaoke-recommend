@@ -157,9 +157,6 @@ const SettingsPage = () => {
             </div>
             <p className="text-sm text-gray-600 mt-2">
               一度に提案する曲数を選択できます。
-              {state.settings.displayCount === 3 && (
-                <span className="text-orange-600 font-medium"> (現在の実装では1曲のみ対応)</span>
-              )}
             </p>
           </div>
         </div>

@@ -16,7 +16,7 @@ import SettingsPage from './pages/SettingsPage';
 function App() {
   return (
     <AppProvider>
-      <BrowserRouter>
+      <BrowserRouter basename="/karaoke-recommend">
         <div className="min-h-screen bg-gray-100 flex flex-col">
           <Header />
           <main className="flex-1">

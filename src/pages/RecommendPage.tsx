@@ -15,7 +15,7 @@ const RecommendPage = () => {
     
     setTimeout(() => {
       const newRecommendation = getRandomRecommendation();
-      if (!newRecommendation) {
+      if (newRecommendation.length === 0) {
         setShowNoSongsMessage(true);
       }
       setIsAnimating(false);
@@ -24,7 +24,7 @@ const RecommendPage = () => {
 
   // 初回提案の自動実行
   useEffect(() => {
-    if (!state.currentRecommendation && state.filteredSongs.length > 0 && state.isDataLoaded) {
+    if (state.currentRecommendation.length === 0 && state.filteredSongs.length > 0 && state.isDataLoaded) {
       handleNewRecommendation();
     }
   }, [state.filteredSongs.length, state.isDataLoaded, state.currentRecommendation, handleNewRecommendation]);
@@ -138,31 +138,56 @@ const RecommendPage = () => {
               </button>
             </div>
           </div>
-        ) : state.currentRecommendation ? (
+        ) : state.currentRecommendation.length > 0 ? (
           // 提案された曲の表示
           <div className="p-8">
             <div className="text-center mb-6">
               <div className="text-6xl mb-4">🎵</div>
-              <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                {state.currentRecommendation.trackName}
+              <h3 className="text-2xl font-bold text-gray-800 mb-6">
+                {state.settings.displayCount === 1 ? '今回の提案曲' : '今回の提案曲（3曲）'}
               </h3>
-              <p className="text-xl text-gray-600 mb-1">
-                {state.currentRecommendation.artistName}
-              </p>
-              <p className="text-lg text-gray-500 mb-4">
-                {state.currentRecommendation.albumName}
-              </p>
-              <div className="inline-flex items-center space-x-2 text-gray-500">
-                <span>⏱️</span>
-                <span>{state.currentRecommendation.trackDuration}</span>
-              </div>
+            </div>
+
+            {/* 複数曲表示 */}
+            <div className={`grid gap-6 mb-8 ${
+              state.currentRecommendation.length === 1 
+                ? 'grid-cols-1' 
+                : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+            }`}>
+              {state.currentRecommendation.map((song, index) => (
+                <div key={song.id} className="bg-gray-50 rounded-lg p-6 text-center border border-gray-200">
+                  <div className="text-4xl mb-3">
+                    {state.currentRecommendation.length === 1 ? '🎤' : `🎵`}
+                  </div>
+                  <h4 className="text-xl font-bold text-gray-800 mb-2 line-clamp-2">
+                    {song.trackName}
+                  </h4>
+                  <p className="text-lg text-gray-600 mb-1 line-clamp-1">
+                    {song.artistName}
+                  </p>
+                  <p className="text-sm text-gray-500 mb-3 line-clamp-1">
+                    {song.albumName}
+                  </p>
+                  <div className="inline-flex items-center space-x-2 text-gray-500 text-sm">
+                    <span>⏱️</span>
+                    <span>{song.trackDuration}</span>
+                  </div>
+                  {state.currentRecommendation.length > 1 && (
+                    <div className="mt-3">
+                      <span className="inline-block bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full">
+                        #{index + 1}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              ))}
             </div>
 
             {/* アクションボタン */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button
                 onClick={handleNewRecommendation}
-                disabled={availableCount <= 1 && state.settings.preventDuplicates}
+                disabled={availableCount <= state.settings.displayCount && state.settings.preventDuplicates}
                 className="bg-purple-600 hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center justify-center space-x-2"
               >
                 <span>🎲</span>
