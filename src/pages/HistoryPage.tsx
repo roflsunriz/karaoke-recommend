@@ -104,7 +104,9 @@ const HistoryPage = () => {
         // 履歴がない場合
         <div className="text-center py-12">
           <div className="bg-gray-50 rounded-lg p-8">
-            <span className="text-6xl mb-4 block">📝</span>
+            <div className="mb-4 flex justify-center">
+              <Icon name="history" color="info" size="large" className="text-6xl" />
+            </div>
             <h3 className="text-xl font-semibold text-gray-800 mb-2">
               まだ履歴がありません
             </h3>
