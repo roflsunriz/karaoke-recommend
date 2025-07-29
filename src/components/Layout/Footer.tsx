@@ -1,3 +1,5 @@
+import Icon from '../common/Icon';
+
 const Footer = () => {
   return (
     <footer className="bg-gray-800 text-white py-4 mt-auto">
@@ -7,9 +9,18 @@ const Footer = () => {
             © roflsunriz - 2025 カラオケオートレコメンド - ローカルデータのみ使用
           </div>
           <div className="flex items-center space-x-4 text-sm text-gray-400">
-            <span>🔒 プライバシー保護</span>
-            <span>⚡ 高速動作</span>
-            <span>📱 レスポンシブ対応</span>
+            <span className="flex items-center gap-1">
+              <Icon name="lock" color="inherit" size="small" />
+              プライバシー保護
+            </span>
+            <span className="flex items-center gap-1">
+              <Icon name="bolt" color="inherit" size="small" />
+              高速動作
+            </span>
+            <span className="flex items-center gap-1">
+              <Icon name="phone" color="inherit" size="small" />
+              レスポンシブ対応
+            </span>
           </div>
         </div>
       </div>

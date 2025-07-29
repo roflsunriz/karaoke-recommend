@@ -181,12 +181,18 @@ const HistoryPage = () => {
                         </div>
                       </div>
                       <div className="flex items-center space-x-4 text-sm text-gray-500">
-                        <span>💿 {item.song.albumName}</span>
+                        <span className="flex items-center gap-1">
+                          <Icon name="album" color="info" size="small" />
+                          {item.song.albumName}
+                        </span>
                         <span className="flex items-center gap-1">
                           <Icon name="time" color="info" size="small" />
                           {item.song.trackDuration}
                         </span>
-                        <span>📅 {formatDate(item.recommendedAt)}</span>
+                        <span className="flex items-center gap-1">
+                          <Icon name="calendar" color="info" size="small" />
+                          {formatDate(item.recommendedAt)}
+                        </span>
                       </div>
                     </div>
                     <button

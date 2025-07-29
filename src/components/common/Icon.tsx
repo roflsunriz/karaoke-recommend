@@ -21,6 +21,11 @@ import {
   Delete,
   AccessTime,
   Refresh,
+  Lock,
+  Bolt,
+  PhoneAndroid,
+  Album,
+  CalendarToday,
 } from '@mui/icons-material';
 
 type IconName =
@@ -39,7 +44,12 @@ type IconName =
   | 'info'
   | 'delete'
   | 'time'
-  | 'refresh';
+  | 'refresh'
+  | 'lock'
+  | 'bolt'
+  | 'phone'
+  | 'album'
+  | 'calendar';
 
 interface IconProps {
   name: IconName;
@@ -87,6 +97,11 @@ const Icon: React.FC<IconProps> = ({
     delete: Delete,
     time: AccessTime,
     refresh: Refresh,
+    lock: Lock,
+    bolt: Bolt,
+    phone: PhoneAndroid,
+    album: Album,
+    calendar: CalendarToday,
   };
 
   const IconComponent = iconMap[name];
