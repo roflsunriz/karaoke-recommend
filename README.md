@@ -58,7 +58,7 @@ Skiley（Spotifyサードパーティサービス）のエクスポートデー�
 
 ### 必要な環境
 - Node.js 20以上
-- npm または yarn
+- bun
 
 ### インストール
 
@@ -68,23 +68,23 @@ git clone https://github.com/roflsunriz/karaoke-recommend.git
 cd karaoke-recommend
 
 # 依存関係をインストール
-npm install
+bun install
 
 # 開発サーバーを起動
-npm run dev
+bun run dev
 ```
 
 ### ビルド
 
 ```bash
 # 本番用ビルド
-npm run build
+bun run build
 
 # プレビュー
-npm run preview
+bun run preview
 
 # GitHub Pagesにデプロイ
-npm run deploy
+bun run deploy
 ```
 
 ## 🎯 使用方法
@@ -125,11 +125,11 @@ src/
 ### スクリプト
 
 ```bash
-npm run dev       # 開発サーバー起動
-npm run build     # 本番ビルド
-npm run preview   # ビルド結果のプレビュー
-npm run lint      # ESLintでコードチェック
-npm run deploy    # GitHub Pagesにデプロイ
+bun run dev       # 開発サーバー起動
+bun run build     # 本番ビルド
+bun run preview   # ビルド結果のプレビュー
+bun run lint      # ESLintでコードチェック
+bun run deploy    # GitHub Pagesにデプロイ
 ```
 
 ### 主要な機能実装
