@@ -3,7 +3,7 @@
  * メインアプリケーションコンポーネント
  */
 
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import { AppProvider } from './context/AppContext';
 import Header from './components/Layout/Header';
 import Footer from './components/Layout/Footer';

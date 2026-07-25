@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
 import Icon from '../components/common/Icon';
 import DataMergeModal, { type MergeMode } from '../components/common/DataMergeModal';
@@ -246,4 +246,4 @@ const ImportPage = () => {
   );
 };
 
-export default ImportPage; 
+export default ImportPage;
