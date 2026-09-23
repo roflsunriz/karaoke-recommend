@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { useApp } from '../context/AppContext';
 import Icon from '../components/common/Icon';
@@ -23,10 +23,15 @@ const RecommendPage = () => {
     }, 1000);
   }, [getRandomRecommendation]);
 
-  // 初回提案の自動実行
+  // 初回提案の自動実行（effect本体での同期setStateを避けるため非同期に委譲する）
+  const hasAutoRecommended = useRef(false);
   useEffect(() => {
-    if (state.currentRecommendation.length === 0 && state.filteredSongs.length > 0 && state.isDataLoaded) {
-      handleNewRecommendation();
+    if (!hasAutoRecommended.current && state.currentRecommendation.length === 0 && state.filteredSongs.length > 0 && state.isDataLoaded) {
+      hasAutoRecommended.current = true;
+      const timerId = setTimeout(() => {
+        void handleNewRecommendation();
+      }, 0);
+      return () => clearTimeout(timerId);
     }
   }, [state.filteredSongs.length, state.isDataLoaded, state.currentRecommendation, handleNewRecommendation]);
 
