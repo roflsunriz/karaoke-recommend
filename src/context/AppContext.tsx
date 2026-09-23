@@ -112,16 +112,6 @@ interface AppProviderProps {
 export function AppProvider({ children }: AppProviderProps) {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
-  // アプリ起動時にIndexedDBからデータを復元
-  useEffect(() => {
-    const initializeData = async () => {
-      await loadSettingsFromDB();
-      await loadSongsFromDB();
-      await loadHistoryFromDB();
-    };
-    initializeData();
-  }, []);
-
   // 曲データを読み込む（メモリのみ）
   const loadSongs = (songs: Song[]) => {
     dispatch({ type: 'LOAD_SONGS', payload: songs });
@@ -256,6 +246,16 @@ export function AppProvider({ children }: AppProviderProps) {
       dispatch({ type: 'UPDATE_SETTINGS', payload: settings });
     }
   };
+
+  // アプリ起動時にIndexedDBからデータを復元（宣言済みヘルパーのみ参照する）
+  useEffect(() => {
+    const initializeData = async () => {
+      await loadSettingsFromDB();
+      await loadSongsFromDB();
+      await loadHistoryFromDB();
+    };
+    initializeData();
+  }, []);
 
   // SongをDisplaySongに変換
   const convertToDisplaySong = (song: Song): DisplaySong => ({
