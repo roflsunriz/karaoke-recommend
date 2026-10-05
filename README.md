@@ -103,9 +103,11 @@ bun run build
 # プレビュー
 bun run preview
 
-# GitHub Pagesにデプロイ
+# GitHub Pagesにmainのコミットをデプロイ
 bun run deploy
 ```
+
+`bun run deploy` はローカルのビルド確認後、認証済みGitHub CLIを使って既存のGitHub Pages workflowを `main` 指定で起動します。公開したい変更は先にmainへ取り込みます。ローカルの未コミット変更は公開されません。実行結果の確認方法は [更新手順](how-to-update.md) を参照してください。
 
 ## プロジェクト構造
 
