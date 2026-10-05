@@ -6,6 +6,11 @@
 
 ## [Unreleased]
 
+### Security
+
+- brace-expansion の既知DoSを解消するため、既存 override を5.0.12へ更新し、Bunのlockを再生成した。
+- 修正版がない braces の経路を除き公開機能を維持するため、手動deployを既存のGitHub Pages workflowへ統一し、gh-pages依存を外した。
+
 ### Fixed
 
 - CI と Dependabot の分類の実行順が前後しても更新を取りこぼさないよう、同じ PR 番号と head SHA を再照合する経路を追加した。
