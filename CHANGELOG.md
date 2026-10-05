@@ -6,6 +6,11 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- 公開画面がReactの版不一致で起動しない問題を解消するため、ReactとReact DOMを同じ19.3.0へ同期して固定し、DOM型も同系列へ更新した。
+- build成功だけでは検出できないレンダラー初期化失敗を再発防止するため、インストール済みReact/DOMを使った実描画テストをCIへ追加した。
+
 ### Security
 
 - brace-expansion の既知DoSを解消するため、既存 override を5.0.12へ更新し、Bunのlockを再生成した。
