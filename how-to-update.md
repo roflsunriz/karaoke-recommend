@@ -24,3 +24,7 @@ gh run watch <実行ID> --repo roflsunriz/karaoke-recommend --exit-status
 ```
 
 成功後はPagesの公開URLと更新内容を確認する。失敗時はその実行ログを読み、原因を修正して同じworkflowを再実行する。公開済み内容の復旧は問題のコミットを通常revertし、mainのCIとPages公開の成功を確認する。
+
+## ReactとReact DOMの更新
+
+ReactとReact DOMは完全に同じversionを同時に選び、package.jsonとbun.lockを同じコミットで更新する。peer rangeやbuild成功だけでは起動時の完全一致を保証しない。`bun install --frozen-lockfile`、`bun audit`、`bun run lint`、`bun run type-check`、`bun run test`、`bun run build`を確認し、`bun run preview`の本番画面でも初期表示と各ページへの移動を確認する。main取り込み後は品質CIとPages公開を待ち、公開画面を再確認する。復旧は両依存とlockを同時に戻す通常revertを使う。

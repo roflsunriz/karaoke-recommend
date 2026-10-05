@@ -30,3 +30,7 @@ Get-Content -Raw -LiteralPath .\COMMON-AGENTS.md
 ## CI監査修復の注意
 
 - 2026-10-05: Pages APIのbuild_typeはworkflow、sourceはmain。旧gh-pagesのbranch出力は実際の公開経路ではなかった。bun run deployは認証済みGitHub CLIでdeploy.ymlをmain指定で起動する。未commitのローカル成果物は配信しない。braces3.0.3はGHSA-vfj7-8cjw-p6xmの修正版がなく、gh-pages→globby→fast-glob→micromatch経路を除去した。
+
+## Reactの実行時互換性
+
+- 2026-10-05: React19.3.0/React DOM19.2.8はpeer rangeを満たして監査・型・buildも通るが、公開画面の起動時にReact error #527で描画が停止した。公式https://react.dev/errors/527の通り両者は完全に同一versionでなければならない。依存更新は両者を同時に行い、bun run testで実レンダラーの初期化と描画、ブラウザで本番buildの画面表示を確認する。

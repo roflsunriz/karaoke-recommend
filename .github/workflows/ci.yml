@@ -30,5 +30,7 @@ jobs:
         run: bun run lint
       - name: bun run type-check
         run: bun run type-check
+      - name: Verify installed React runtime compatibility
+        run: bun run test
       - name: bun run build
         run: bun run build

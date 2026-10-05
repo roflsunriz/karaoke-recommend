@@ -138,6 +138,7 @@ bun run dev       # 開発サーバー起動
 bun run build     # 本番ビルド
 bun run preview   # ビルド結果のプレビュー
 bun run lint      # ESLintでコードチェック
+bun run test      # インストール済みReact/DOMの描画互換性を確認
 bun run deploy    # GitHub Pagesにデプロイ
 ```
 

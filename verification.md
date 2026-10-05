@@ -27,3 +27,11 @@
 - Pages APIでbuild_type=workflow、source.branch=mainを確認し、既存deploy.ymlのworkflow_dispatchと本番build・artifact・Pages公開stepsを照合した。通常のmain pushで同workflowが起動する。手動deployのdispatch後も対象SHAと実行結果を確認する（how-to-update.md参照）。
 - bracesは2026-10-05時点でpatched versions=None、npm latest=3.0.3。監査抑制せずgh-pages経路を既存Actions公開へ置換した。
 - ローカル結果: CIと同じBun（1.3.8）で固定lockとbun audit成功（既知脆弱性0件）。lint、型検査、本番build成功。単体テストscriptは本repoでは定義されていない。
+
+## 2026-10-05: 公開画面のReact実行時修復
+
+- main7651420の品質CI・Pages公開・手動dispatch・HTTPとartifact比較は成功したが、分離Chromeでrootの描画0件、React error #527（React19.3.0/React DOM19.2.8）を再現した。CI成功を画面成功と扱わない。
+- ReactとReact DOMを19.3.0へそろえて固定し、DOM型も19.3系列へ更新した。公式の完全一致条件はhttps://react.dev/errors/527を参照。
+- bun run testは実際にインストールしたReact DOMのサーバーレンダラーを初期化・描画する。旧不一致の組み合わせではレンダラー初期化で失敗すること、新組み合わせで成功することを確認する。
+- CI同版Bun1.3.8の固定lock・全依存監査・lint・型・test・buildと、ローカル本番preview/公開PagesのChrome描画を検証する。既存の監査・build・公開チェックは維持する。
+- ローカル結果: 全監査0件、lint・型・実レンダラーテスト・本番build成功。旧19.3.0/19.2.8の隔離fixtureでは同テストがIncompatible React versionsで失敗し、修復版は成功した。本番previewのChromeで初期表示と5ページ（list/recommend/history/settings/import）のリンク移動・描画が成功、実行時例外0件。CI YAMLはテストstep追加以外に既存条件・steps・権限の変更なしと構造比較した。
