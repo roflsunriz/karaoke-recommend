@@ -6,6 +6,8 @@ PR #20〜#24 のCIは、`source-map-js` 1.2.1に対するGHSA-68fv-2mgg-jv7qの�
 
 PR #24ではmainの更新を取り込んでlockfileを再生成し、TypeScript 6.0.3で同じ検証が成功した。`typescript-eslint` 8.71.1のnpm peer範囲はTypeScript `<6.1.0`であり、現時点の7.0.2は対象外。マージ後はPRのCIとmainのCIを確認する。
 
+PR #20〜#24はすべてCI成功後にmainへマージされた。追加の依存更新では、MUI両パッケージ、React Router、Vite、ESLint関連、PostCSSを更新し、Bun 1.4.0の固定インストール、監査0件、lint、型、実レンダラーテスト、buildが成功した。分離Chromeとローカルpreviewの接続が確立できず、更新後のブラウザ操作は未検証。mainのCIと公開画面での表示確認を別途行う。
+
 ## Dependabot 自動処理（2026-09-23）
 
 `.github/workflows/dependabot-automation.yml` を actionlint で検査し、PR 用 workflow 名（CI）と一致することを確認する。Dependabot の patch／minor かつ全 PR チェック成功の場合だけ取り込み、major・古い SHA・再失敗は残す。

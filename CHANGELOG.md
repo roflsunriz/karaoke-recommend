@@ -28,6 +28,7 @@
 
 ### Changed
 
+- Dependabot更新後の依存を安全な最新版へそろえるため、MUI、React Router、Vite、ESLint関連、PostCSSなどを更新し、古いReact Router固定指定を外した。
 - TypeScriptの更新を進めつつlintと型検査の互換性を保つため、対応範囲内の6.0.3へ更新した。
 
 - 不具合・機能提案などの受付とPRの記入形式を揃え、プロジェクト固有の確認項目を残した。 READMEは既存の意味と手順を保ち、実装と異なる説明や読みにくい表現を修正した。
