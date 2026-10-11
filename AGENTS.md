@@ -27,6 +27,10 @@ Get-Content -Raw -LiteralPath .\COMMON-AGENTS.md
 - `@mui/icons-material` 9は peerで `@mui/material` ^9を要求する。片方だけ上げると `createSvgIcon` 未exportでビルドが失敗する。`package.json` の両方を同時に更新し、`bun install` で `bun.lock` を再生成して `bun run build` で確認する。
 - Dependabot PRが最新mainより遅れている場合はPRブランチへ `origin/main` を取り込み、`bun install` で競合後のlockfileを再生成してから修正・検証する。リモートがDependabotのforce-updateで進んでいた場合は `origin/<branch>` から作り直し、必要な修正差分だけ載せ替えてpushする。
 
+## TypeScript更新の制約（2026-10-11）
+
+- `typescript-eslint` 8.71.1の公式npmメタデータにあるTypeScript peer範囲は `>=4.8.4 <6.1.0`。TypeScript 7はこの範囲外のため、対応版が出るまでは6.0.3を使用し、更新時にpeer範囲とlint・型・buildを再確認する。
+
 ## CI監査修復の注意
 
 - 2026-10-05: Pages APIのbuild_typeはworkflow、sourceはmain。旧gh-pagesのbranch出力は実際の公開経路ではなかった。bun run deployは認証済みGitHub CLIでdeploy.ymlをmain指定で起動する。未commitのローカル成果物は配信しない。braces3.0.3はGHSA-vfj7-8cjw-p6xmの修正版がなく、gh-pages→globby→fast-glob→micromatch経路を除去した。
