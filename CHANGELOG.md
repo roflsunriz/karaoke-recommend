@@ -13,6 +13,7 @@
 
 ### Security
 
+- Dependabot PR の CI を止めていた `source-map-js` の既知のDoSを解消するため、lockfileを修正版1.2.2へ更新した。
 - brace-expansion の既知DoSを解消するため、既存 override を5.0.12へ更新し、Bunのlockを再生成した。
 - 修正版がない braces の経路を除き公開機能を維持するため、手動deployを既存のGitHub Pages workflowへ統一し、gh-pages依存を外した。
 
@@ -27,6 +28,7 @@
 
 ### Changed
 
+- TypeScriptの更新を進めつつlintと型検査の互換性を保つため、対応範囲内の6.0.3へ更新した。
 
 - 不具合・機能提案などの受付とPRの記入形式を揃え、プロジェクト固有の確認項目を残した。 READMEは既存の意味と手順を保ち、実装と異なる説明や読みにくい表現を修正した。
 
