@@ -1,5 +1,9 @@
 # 検証手順
 
+## 2026-10-11: Dependabot PR の監査失敗
+
+PR #20〜#24 のCIは、`source-map-js` 1.2.1に対するGHSA-68fv-2mgg-jv7qの検出で停止した。mainのlockfileを1.2.2へ更新し、`bun install --frozen-lockfile`、`bun audit`（0件）、lint、型チェック、実レンダラーテスト、buildの成功を確認した。PRを更新した後も、各PRのCI結果とマージ後のmainのCIを確認する。
+
 ## Dependabot 自動処理（2026-09-23）
 
 `.github/workflows/dependabot-automation.yml` を actionlint で検査し、PR 用 workflow 名（CI）と一致することを確認する。Dependabot の patch／minor かつ全 PR チェック成功の場合だけ取り込み、major・古い SHA・再失敗は残す。

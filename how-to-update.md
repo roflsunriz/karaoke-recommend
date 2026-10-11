@@ -10,6 +10,8 @@
 
 `package.json` の `overrides` は、上流パッケージが brace-expansion の旧版を固定している間に安全な patch 版を選ぶために使う。上流が安全版を採用したら override を減らせるか確認する。更新時は `bun install --lockfile-only --ignore-scripts`、`bun install --frozen-lockfile`、`bun audit` を実行し、該当する lint・型・テスト・ビルドを確認する。問題があれば更新コミットを revert し、lockfile と package.json を同じ版へ戻す。
 
+推移依存の監査失敗では `bun audit fix` で安全版へ更新できる場合がある。生成された`bun.lock`の差分を確認し、固定インストールと監査を再実行する。`package.json`に追加の固定指定が必要かどうかは、上流の依存範囲とlockfileを確認して判断する。
+
 CI 完了より Dependabot の分類が遅れる場合は、`callback_workflow_file` が指す呼び出し側 workflow を `workflow_dispatch` し、同じ PR 番号・head SHA・全チェックを再確認する。呼び出し側のファイル名を変える際はこの入力も一緒に更新する。
 
 ## 手動でGitHub Pagesを再公開する
