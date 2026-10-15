@@ -10,9 +10,7 @@ PR #20〜#24はすべてCI成功後にmainへマージされた。追加の依�
 
 ## Dependabot 自動処理（2026-09-23）
 
-`.github/workflows/dependabot-automation.yml` を actionlint で検査し、PR 用 workflow 名（CI）と一致することを確認する。Dependabot の patch／minor かつ全 PR チェック成功の場合だけ取り込み、major・古い SHA・再失敗は残す。
-
-実際の Dependabot PR がまだない場合、動作経路は未検証として扱う。実 PR 発生後に自動化ジョブ、CI の再試行、マージ結果を確認する。
+詳細は [findings.md](findings.md#verification-1) に移しました。
 
 ## 依存脆弱性の確認（2026-09-23）
 
@@ -43,3 +41,11 @@ PR #20〜#24はすべてCI成功後にmainへマージされた。追加の依�
 - bun run testは実際にインストールしたReact DOMのサーバーレンダラーを初期化・描画する。旧不一致の組み合わせではレンダラー初期化で失敗すること、新組み合わせで成功することを確認する。
 - CI同版Bun1.3.8の固定lock・全依存監査・lint・型・test・buildと、ローカル本番preview/公開PagesのChrome描画を検証する。既存の監査・build・公開チェックは維持する。
 - ローカル結果: 全監査0件、lint・型・実レンダラーテスト・本番build成功。旧19.3.0/19.2.8の隔離fixtureでは同テストがIncompatible React versionsで失敗し、修復版は成功した。本番previewのChromeで初期表示と5ページ（list/recommend/history/settings/import）のリンク移動・描画が成功、実行時例外0件。CI YAMLはテストstep追加以外に既存条件・steps・権限の変更なしと構造比較した。
+
+## 2026-10-16: findings.mdへの知見分離
+
+- 目的: 共通指針に合わせ、AGENTSの行動指示と利用者向けREADMEから、開発内部の実現手段・例外の条件・再利用する調査知見をfindings.mdへ分離した。移動した本文の条件・確認日・未検証の留保を保持した。
+- 元文書との本文照合、Markdownの相対リンク・見出しアンカーの検査、git diff --checkを実施し、新たなリンク不整合と空白エラーは0件。AGENTSの一般的な指示は内容を保って再編し、findings全文必読・禁止と承認条件を確認した。
+- GitHubの既存Dependabot警告を読み取り、Open PRも確認した（作業開始時Open PR 0件、Open警告 0件）。GitHubの警告なしを全依存の安全保証や実機動作の検証とは扱わない。
+- ローカルの依存監査は既知の脆弱性0件で通過した。outdatedによる更新候補も読み取り確認し、TypeScript解析器の非互換制約と無関係な版更新を区別した。
+- 文書移動と参照整理では製品の実行時ロジックを変更していない。実機書換え、認証操作、外部サービスへの投稿・署名・リリースは実施せず、これらの動作が再検証済みであるとは扱わない。

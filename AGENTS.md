@@ -13,28 +13,8 @@ Get-Content -Raw -LiteralPath .\COMMON-AGENTS.md
 4. 全文を読了するまで、ローカル `AGENTS.md` だけを根拠に作業を続けてはならない。読了後は `COMMON-AGENTS.md` を最優先の指針とし、読了直後の最初の進捗報告で全文を読了したことを明示する。
    このファイルでは `karaoke-recommend` 固有の補足だけを記載する。
 
-## パッケージ管理
+## プロジェクト固有の知見
 
-- パッケージマネージャは Bun を使用する。
-
-## 依存監査で確定した事項（2026-09-23）
-
-- `bun audit fix` だけでは brace-expansion の脆弱版が上流の厳密な依存範囲で残る。`package.json` の既存 `overrides` と `bun.lock` を同時に更新し、`bun audit` と関連テスト・ビルドで確認する。上流が安全版を取り込んだ場合は override の必要性を再評価する。
-
-## Dependabot更新で確定した事項（2026-09-23）
-
-- `eslint-plugin-react-hooks` v7は `eslint.config.js` で `configs.flat['recommended-latest']` を使う。旧形式 `configs['recommended-latest']` のままでは flat configのplugins形式エラーになる。新ルール `react-hooks/immutability` 対策として `src/context/AppContext.tsx` の初期化effectはヘルパー宣言より後に置く。新ルール `react-hooks/set-state-in-effect` 対策として `src/pages/RecommendPage.tsx` の初回自動提案は `setTimeout` へ委譲する。検証は `bun run lint`、`bun run type-check`、`bun run build`。
-- `@mui/icons-material` 9は peerで `@mui/material` ^9を要求する。片方だけ上げると `createSvgIcon` 未exportでビルドが失敗する。`package.json` の両方を同時に更新し、`bun install` で `bun.lock` を再生成して `bun run build` で確認する。
-- Dependabot PRが最新mainより遅れている場合はPRブランチへ `origin/main` を取り込み、`bun install` で競合後のlockfileを再生成してから修正・検証する。リモートがDependabotのforce-updateで進んでいた場合は `origin/<branch>` から作り直し、必要な修正差分だけ載せ替えてpushする。
-
-## TypeScript更新の制約（2026-10-11）
-
-- `typescript-eslint` 8.71.1の公式npmメタデータにあるTypeScript peer範囲は `>=4.8.4 <6.1.0`。TypeScript 7はこの範囲外のため、対応版が出るまでは6.0.3を使用し、更新時にpeer範囲とlint・型・buildを再確認する。
-
-## CI監査修復の注意
-
-- 2026-10-05: Pages APIのbuild_typeはworkflow、sourceはmain。旧gh-pagesのbranch出力は実際の公開経路ではなかった。bun run deployは認証済みGitHub CLIでdeploy.ymlをmain指定で起動する。未commitのローカル成果物は配信しない。braces3.0.3はGHSA-vfj7-8cjw-p6xmの修正版がなく、gh-pages→globby→fast-glob→micromatch経路を除去した。
-
-## Reactの実行時互換性
-
-- 2026-10-05: React19.3.0/React DOM19.2.8はpeer rangeを満たして監査・型・buildも通るが、公開画面の起動時にReact error #527で描画が停止した。公式https://react.dev/errors/527の通り両者は完全に同一versionでなければならない。依存更新は両者を同時に行い、bun run testで実レンダラーの初期化と描画、ブラウザで本番buildの画面表示を確認する。
+- [COMMON-AGENTS.md](COMMON-AGENTS.md) を最優先とし、作業前に [findings.md](findings.md) も先頭から末尾まで全文読む。出力省略や読取り失敗を読了扱いしない。
+- 実現手段・環境差・明示的な例外・再利用する調査知見はfindings.mdへ随時記録する。変更履歴はCHANGELOG.md、実施した検証と未検証事項はverification.mdに残す。
+- ユーザーの禁止・承認条件、秘密情報と既存データの保護、未コミット変更を戻さない義務を弱めない。

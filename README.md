@@ -65,13 +65,7 @@ Skileyは、Spotifyの聴取データを詳細に分析・エクスポートで�
 
 ## 技術スタック
 
-- **フロントエンド**: React 19 + TypeScript
-- **ビルドツール**: Vite
-- **UI Components**: Material-UI + Tailwind CSS v4
-- **ルーティング**: React Router v8
-- **データ管理**: IndexedDB
-- **状態管理**: React Context + useReducer
-- **ホスティング**: GitHub Pages
+詳細は [findings.md](findings.md#readme-1) に移しました。
 
 ## セットアップ
 
@@ -111,52 +105,11 @@ bun run deploy
 
 ## プロジェクト構造
 
-```
-src/
-├── components/          # 再利用可能なコンポーネント
-│   ├── common/         # 共通UI部品（Icon、モーダル等）
-│   └── Layout/         # レイアウトコンポーネント
-├── pages/              # ページコンポーネント
-│   ├── ImportPage.tsx  # データインポート
-│   ├── ListPage.tsx    # 楽曲一覧
-│   ├── RecommendPage.tsx # 推薦機能
-│   ├── HistoryPage.tsx # 履歴管理
-│   └── SettingsPage.tsx # 設定
-├── context/            # React Context（状態管理）
-├── types/              # TypeScript型定義
-├── utils/              # ユーティリティ関数
-│   └── indexedDB.ts    # データベース操作
-└── assets/             # 静的アセット
-```
+詳細は [findings.md](findings.md#readme-2) に移しました。
 
 ## 開発
 
-### スクリプト
-
-```bash
-bun run dev       # 開発サーバー起動
-bun run build     # 本番ビルド
-bun run preview   # ビルド結果のプレビュー
-bun run lint      # ESLintでコードチェック
-bun run test      # インストール済みReact/DOMの描画互換性を確認
-bun run deploy    # GitHub Pagesにデプロイ
-```
-
-### 主要な機能実装
-
-- **状態管理**: React Context + useReducer による統一された状態管理
-- **データ永続化**: IndexedDBに楽曲データと履歴を保存
-- **マージ機能**: 完全置換・既存データ保持・削除曲の反映から選択
-- **検索・フィルタ**: リアルタイム検索とソート機能
-- **レスポンシブ**: モバイル・デスクトップ完全対応
-
-### コントリビューション
-
-1. このリポジトリをフォーク
-2. feature ブランチを作成 (`git checkout -b feature/amazing-feature`)
-3. 変更をコミット (`git commit -m 'Add amazing feature'`)
-4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
-5. Pull Request を作成
+詳細は [findings.md](findings.md#readme-3) に移しました。
 
 ## ライセンス
 
@@ -172,4 +125,4 @@ bun run deploy    # GitHub Pagesにデプロイ
 
 ## 依存更新の自動処理
 
-Dependabot は対象の依存関係を毎週確認します。patch／minor 更新は PR のチェック（CI）が成功した後に自動で squash merge されます。CI の失敗ジョブは 1 回だけ再実行します。再失敗時は指定した lockfile を再生成し、CI を再実行します。major 更新は手動で確認します。マージ後はデプロイ workflow を明示起動します。
+詳細は [findings.md](findings.md#readme-4) に移しました。
