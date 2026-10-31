@@ -4,4 +4,5 @@
 - `@mui/icons-material` と `@mui/material` は同じmajorへ同時更新する。片方だけでは `createSvgIcon` export不一致でbuildが失敗する。
 - `eslint-plugin-react-hooks` v7のflat configは `configs.flat['recommended-latest']` を使う。新ruleはeffect順序やeffect内setStateの実装修正で満たし、ruleを無効化しない。
 - TypeScript 7はtypescript-eslintのpeer範囲外なので対応まで6系を維持する。`bun audit fix` だけで残る間接依存はoverrideとlockfileを同時更新する。
+- 2026-10-31の依存監査では、`eslint-plugin-react-hooks` 経由のZodとminimatchが検出された。修正版へoverrideし、Bun 1.3.8の監査とlint・型・実レンダラー・buildを確認した。
 - Pagesの公開経路はbranch出力でなくActions workflow。未commitのlocal成果物を配信せず、認証済みCLIでmainのdeploy workflowを起動する。
