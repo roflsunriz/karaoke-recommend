@@ -1,5 +1,10 @@
 # 検証手順
 
+## 2026-10-31: Dependabot PR #33 の依存監査
+
+- Zodとminimatchを修正版に更新し、CIと同じBun 1.3.8で固定インストール、監査0件、lint、型検査、Reactレンダラーテスト、本番buildが成功した。
+- 分離したローカルpreviewをアプリ内ブラウザーで開き、インポート画面と設定画面の表示を確認した。公開後の画面は別途確認する。
+
 ## 2026-10-11: Dependabot PR の監査失敗
 
 PR #20〜#24 のCIは、`source-map-js` 1.2.1に対するGHSA-68fv-2mgg-jv7qの検出で停止した。mainのlockfileを1.2.2へ更新し、`bun install --frozen-lockfile`、`bun audit`（0件）、lint、型チェック、実レンダラーテスト、buildの成功を確認した。PRを更新した後も、各PRのCI結果とマージ後のmainのCIを確認する。

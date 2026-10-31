@@ -29,6 +29,7 @@
 
 ### Security
 
+- 依存監査で検出されたZodとminimatchの脆弱性を解消するため、推移依存を修正版へ更新した。
 - Dependabot PR の CI を止めていた `source-map-js` の既知のDoSを解消するため、lockfileを修正版1.2.2へ更新した。
 - brace-expansion の既知DoSを解消するため、既存 override を5.0.12へ更新し、Bunのlockを再生成した。
 - 修正版がない braces の経路を除き公開機能を維持するため、手動deployを既存のGitHub Pages workflowへ統一し、gh-pages依存を外した。
